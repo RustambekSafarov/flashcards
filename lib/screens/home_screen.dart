@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../models/cart.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget with ChangeNotifier {
+  HomeScreen({super.key});
   static const routeName = '/home';
 
   @override
@@ -35,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen>
         id: 1,
         baseWord: 'Something',
         translated: 'Nimadir',
-        group: 'qaysidir',
       )
     ];
 
@@ -88,45 +89,37 @@ class _HomeScreenState extends State<HomeScreen>
                       itemCount: items.length,
                       itemBuilder: (context, index, realIndex) {
                         return Container(
-                          margin: EdgeInsets.all(29 * fem),
-                          child: GestureDetector(
-                            onTap: _flip,
-                            child: TweenAnimationBuilder(
-                              tween: Tween<double>(begin: 0, end: angle),
-                              duration: Duration(milliseconds: 500),
-                              builder: (BuildContext context, double val, __) {
-                                //here we will change the isBack val so we can change the content of the card
-                                if (val >= (pi / 2)) {
-                                  isBack = false;
-                                } else {
-                                  isBack = true;
-                                }
-                                return Transform(
-                                  //let's make the card flip by it's center
-                                  alignment: Alignment.center,
-                                  transform: Matrix4.identity()
-                                    ..setEntry(3, 2, 0.001)
-                                    ..rotateY(val),
-                                  child: Container(
-                                      width: 309,
-                                      height: 474,
-                                      child: isBack
-                                          ? Container(
-                                              color: Colors.amber,
-                                            ) //if it's back we will display here
-                                          : Transform(
-                                              alignment: Alignment.center,
-                                              transform: Matrix4.identity()
-                                                ..rotateY(
-                                                  pi,
-                                                ), // it will flip horizontally the container
-                                              child: Container(
-                                                color: Colors.grey,
-                                              ),
-                                            ) //else we will display it here,
-                                      ),
-                                );
-                              },
+                          margin: EdgeInsets.only(
+                            left: 50 * fem,
+                            right: 50 * fem,
+                            top: 10 * fem,
+                            bottom: 10 * fem,
+                          ),
+                          child: FlipCard(
+                            speed: 250,
+                            direction: FlipDirection.HORIZONTAL,
+                            front: Container(
+                              height: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  items[index].baseWord,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ),
+                            back: Container(
+                              height: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Center(
+                                child: Text(items[index].translated),
+                              ),
                             ),
                           ),
                         );
@@ -136,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen>
                         enlargeCenterPage: true,
                         autoPlayCurve: Curves.ease,
                         clipBehavior: Clip.antiAliasWithSaveLayer,
+                        enableInfiniteScroll: false,
                         aspectRatio: 1.3,
                         viewportFraction: 0.99,
                       ),
@@ -157,7 +151,15 @@ class _HomeScreenState extends State<HomeScreen>
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white, shape: CircleBorder()),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.goNamed(
+                          '/words',
+                          extra: [
+                            items.length,
+                            items,
+                          ],
+                        );
+                      },
                       child: Container(
                         margin: EdgeInsets.only(
                           left: 15 * fem,

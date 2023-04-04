@@ -28,4 +28,6 @@ class DbHelper with ChangeNotifier {
   Future<void> insertItem() async {
     final db = openDb();
   }
+
+  Future<void> getItem() async {}
 }

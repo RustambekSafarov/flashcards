@@ -7,6 +7,6 @@ class Cart {
     required this.id,
     required this.baseWord,
     required this.translated,
-    required this.group,
+    this.group = '',
   });
 }
