@@ -1,48 +1,40 @@
-import 'package:flip_card/flip_card.dart';
+import 'package:flashcards/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+  static const rounteName = 'splash_screen';
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold();
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
   }
-}
 
-class MyAnimatedContainer extends StatefulWidget {
   @override
-  _MyAnimatedContainerState createState() => _MyAnimatedContainerState();
-}
+  void dispose() {
+    super.dispose();
+  }
 
-class _MyAnimatedContainerState extends State<MyAnimatedContainer> {
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(seconds: 3), () {
+      context.goNamed(HomeScreen.routeName);
+    });
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
-        child: FlipCard(
-          speed: 250,
-          direction: FlipDirection.HORIZONTAL,
-          front: Container(
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(child: Text('Front')),
-          ),
-          back: Container(
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(child: Text('Back')),
-          ),
-        ),
-      ),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/splash_screen.png'),
+        ],
+      )),
     );
   }
 }

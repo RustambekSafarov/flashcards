@@ -1,5 +1,5 @@
 class Cart {
-  int id;
+  String id;
   String baseWord;
   String translated;
   String group;
@@ -7,6 +7,15 @@ class Cart {
     required this.id,
     required this.baseWord,
     required this.translated,
-    this.group = '',
+    this.group = 'Default',
   });
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'baseWord': baseWord,
+      'translated': translated,
+      'group': group,
+    };
+  }
 }

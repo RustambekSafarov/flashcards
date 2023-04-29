@@ -1,12 +1,12 @@
-import 'package:flashcards/screens/add_new_screen.dart';
-import 'package:flashcards/screens/all_words_screen.dart';
-import 'package:flashcards/screens/home_screen.dart';
-import 'package:flashcards/screens/splash_screen.dart';
+import 'package:flashcards/provider/todos.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import 'models/cart.dart';
+import 'screens/add_new_screen.dart';
+import 'screens/all_words_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,31 +21,29 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => HomeScreen(),
-        ),
+          create: (context) => Todos(),
+        )
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: GoRouter(
-          initialLocation: '/add-new',
+          initialLocation: '/',
           routes: [
             GoRoute(
               path: '/',
+              name: SplashScreen.rounteName,
+              builder: (context, state) => SplashScreen(),
+            ),
+            GoRoute(
+              path: '/home',
               name: HomeScreen.routeName,
               builder: (context, state) => HomeScreen(),
+              routes: [],
             ),
             GoRoute(
               path: '/words',
               name: AllWordsScreen.routeName,
-              builder: (context, state) => AllWordsScreen(
-                volume: (state.extra as List)[0],
-                items: (state.extra as List)[1],
-              ),
-            ),
-            GoRoute(
-              path: '/animate',
-              name: '/animate',
-              builder: (context, state) => MyAnimatedContainer(),
+              builder: (context, state) => AllWordsScreen(),
             ),
             GoRoute(
               path: '/add-new',
